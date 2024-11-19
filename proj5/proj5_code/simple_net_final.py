@@ -20,9 +20,45 @@ class SimpleNetFinal(nn.Module):
         #######################################################################
         # Student code begins
         #######################################################################
-
-        raise NotImplementedError('`__init__` function in '
-            + '`simple_net_final.py` needs to be implemented')
+        conv1 = nn.Conv2d(1, 16, kernel_size=(5, 5), padding=2)
+        bn1   = nn.BatchNorm2d(16)
+        relu1 = nn.ReLU()
+        pool1 = nn.MaxPool2d((2, 2), 2)
+        conv2 = nn.Conv2d(16, 64, kernel_size=(3, 3), padding=1)
+        bn2   = nn.BatchNorm2d(64)
+        relu2 = nn.ReLU()
+        pool2 = nn.MaxPool2d((2, 2), 2)
+        conv3 = nn.Conv2d(16, 256, kernel_size=(3, 3), padding=1)
+        bn3   = nn.BatchNorm2d(256)
+        relu3 = nn.ReLU()
+        pool3 = nn.MaxPool2d((2, 2), 2)
+        conv4 = nn.Conv2d(256, 512, kernel_size=(3, 3), padding=1)
+        relu4 = nn.ReLU()
+        pool4 = nn.MaxPool2d((2, 2), 2)
+        adaptive = nn.AdaptiveMaxPool2d(1)
+        dropout = nn.Dropout2d(p=0.5)
+        
+        fc1  = nn.Linear(512, 768)
+        act1 = nn.ReLU()
+        fc2  = nn.Linear(768, 256)
+        act2 = nn.ReLU()
+        fc3  = nn.Linear(256, 15)
+        
+        self.conv_layers = nn.Sequential(
+            conv1, bn1, relu1, pool1,
+            conv2, bn2, relu2, pool2,
+            conv3, bn3, relu3, pool3,
+            conv4, relu4, pool4,
+            dropout,
+            adaptive, nn.Flatten(dim=1)
+        )
+        self.fc_layers = nn.Sequential(
+            fc1, act1, 
+            fc2, act2, 
+            fc3
+        )
+        
+        self.loss_criterion = nn.CrossEntropyLoss()
 
         #######################################################################
         # Student code ends
@@ -43,10 +79,14 @@ class SimpleNetFinal(nn.Module):
         # Student code begins
         #######################################################################
 
-        raise NotImplementedError('`forward` function in '
-            + '`simple_net_final.py` needs to be implemented')
+        x = self.conv_layers(x)
+        model_output = self.fc_layers(x)
 
         #######################################################################
         # Student code ends
         #######################################################################
         return model_output
+
+"""
+Already Done
+"""
