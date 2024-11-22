@@ -27,8 +27,17 @@ class MyResNet18(nn.Module):
         # Student code begins
         #######################################################################
 
-        raise NotImplementedError('`__init__` function in '
-            + '`my_resnet.py` needs to be implemented')
+        res_model = resnet18()
+        block_list = list(res_model.children())[:-1] # remove last fc layer in resnet18
+        self.conv_layers = nn.Sequential(*block_list, nn.Flatten())
+        self.conv_layers.requires_grad_(False) # freeze conv layers
+        
+        fc1 = nn.Linear(512, 128)
+        act1 = nn.ReLU()
+        fc2 = nn.Linear(128, 15)
+        self.fc_layers = nn.Sequential(fc1, act1, fc2)
+        
+        self.loss_criterion = nn.CrossEntropyLoss(reduction='mean')
 
         #######################################################################
         # Student code ends
@@ -52,10 +61,14 @@ class MyResNet18(nn.Module):
         # Student code begins
         #######################################################################
 
-        raise NotImplementedError('`forward` function in '
-            + '`my_resnet.py` needs to be implemented')
+        x = self.conv_layers(x)
+        model_output = self.conv_layers(x)
 
         #######################################################################
         # Student code ends
         #######################################################################
         return model_output
+
+"""
+Temporary Done
+"""
