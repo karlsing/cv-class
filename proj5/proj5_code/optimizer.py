@@ -36,6 +36,8 @@ def get_optimizer(
         optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
     elif optimizer_type == "adam":
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
+    elif optimizer_type == "adam_w":
+        optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
     else:
         raise ValueError("Unknown optimizer type")
 
