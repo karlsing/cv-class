@@ -28,7 +28,7 @@ class SimpleNet(nn.Module):
         adaptive = nn.AdaptiveMaxPool2d(1)
         
         self.conv_layers = nn.Sequential(
-            conv1, pool1, conv2, pool2, relu1, relu2,
+            conv1, pool1, relu1, conv2, pool2, relu2,
             adaptive, nn.Flatten(start_dim=1)
         )
         
