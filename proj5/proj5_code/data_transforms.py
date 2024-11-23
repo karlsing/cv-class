@@ -55,8 +55,8 @@ def get_fundamental_augmentation_transforms(
     ###########################################################################
     
     fund_aug_transforms = transforms.Compose([
+        transforms.Resize(inp_size), transforms.ToTensor(),
         transforms.RandomHorizontalFlip(), transforms.ColorJitter(),
-        get_fundamental_transforms(inp_size),
     ])
 
     ###########################################################################
@@ -127,6 +127,7 @@ def get_all_transforms(
     ###########################################################################
 
     all_transforms = transforms.Compose([
+        transforms.Resize(inp_size),
         transforms.ToTensor(),
         transforms.RandomHorizontalFlip(), transforms.ColorJitter(),
         transforms.Normalize(pixel_mean, pixel_std)

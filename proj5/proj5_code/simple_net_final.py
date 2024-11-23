@@ -20,27 +20,26 @@ class SimpleNetFinal(nn.Module):
         #######################################################################
         # Student code begins
         #######################################################################
-        conv1 = nn.Conv2d(1, 16, kernel_size=(5, 5), padding=2)
+        conv1 = nn.Conv2d(1, 16, kernel_size=(5, 5), padding=2) # 64*64
         bn1   = nn.BatchNorm2d(16)
         relu1 = nn.ReLU()
-        pool1 = nn.MaxPool2d((2, 2), 2)
-        conv2 = nn.Conv2d(16, 64, kernel_size=(3, 3), padding=1)
+        pool1 = nn.MaxPool2d((2, 2), 2) # 32 * 32
+        conv2 = nn.Conv2d(16, 64, kernel_size=(3, 3), padding=1) # 32 * 32
         bn2   = nn.BatchNorm2d(64)
         relu2 = nn.ReLU()
-        pool2 = nn.MaxPool2d((2, 2), 2)
-        conv3 = nn.Conv2d(16, 256, kernel_size=(3, 3), padding=1)
+        pool2 = nn.MaxPool2d((2, 2), 2) # 16 * 16
+        conv3 = nn.Conv2d(64, 256, kernel_size=(3, 3), padding=1) # 16 * 16
         bn3   = nn.BatchNorm2d(256)
         relu3 = nn.ReLU()
-        pool3 = nn.MaxPool2d((2, 2), 2)
-        conv4 = nn.Conv2d(256, 512, kernel_size=(3, 3), padding=1)
+        pool3 = nn.MaxPool2d((2, 2), 2) # 8 * 8
+        conv4 = nn.Conv2d(256, 512, kernel_size=(3, 3), padding=1) # 8 * 8
         relu4 = nn.ReLU()
-        pool4 = nn.MaxPool2d((2, 2), 2)
-        adaptive = nn.AdaptiveMaxPool2d(1)
-        dropout = nn.Dropout2d(p=0.5)
+        pool4 = nn.MaxPool2d((2, 2), 2) # 4 * 4
+        dropout = nn.Dropout(p=0.3)
         
-        fc1  = nn.Linear(512, 768)
+        fc1  = nn.Linear(512*4*4, 1024)
         act1 = nn.ReLU()
-        fc2  = nn.Linear(768, 256)
+        fc2  = nn.Linear(1024, 256)
         act2 = nn.ReLU()
         fc3  = nn.Linear(256, 15)
         
@@ -50,7 +49,7 @@ class SimpleNetFinal(nn.Module):
             conv3, bn3, relu3, pool3,
             conv4, relu4, pool4,
             dropout,
-            adaptive, nn.Flatten(dim=1)
+            nn.Flatten()
         )
         self.fc_layers = nn.Sequential(
             fc1, act1, 

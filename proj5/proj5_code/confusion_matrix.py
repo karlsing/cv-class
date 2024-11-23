@@ -47,8 +47,25 @@ def generate_confusion_data(
     # Student code begins
     ###########################################################################
 
-    raise NotImplementedError('`generate_confusion_data` function in '
-        + '`confusion_matrix.py` needs to be implemented')
+    for label in label_to_idx:
+        class_labels[label_to_idx[label]] = label
+    
+    preds = torch.tensor(preds)
+    targets = torch.tensor(targets)
+    if use_cuda:
+        preds = preds.cuda()
+        targets = targets.cuda()
+    
+    for batch_num, (x, y) in enumerate(loader):
+        x: torch.Tensor
+        y: torch.Tensor
+        targets[batch_num*batch_size:(batch_num+1)*batch_size] = y
+        if use_cuda:
+            x = x.cuda()
+            y = y.cuda()
+        
+        logits = model(x)
+        preds[batch_num*batch_size:(batch_num+1)*batch_size] = logits.argmax(-1)
 
     ###########################################################################
     # Student code ends
@@ -102,8 +119,7 @@ def generate_confusion_matrix(
         # Student code begins
         #######################################################################
 
-        raise NotImplementedError('`generate_confusion_matrix` function in '
-            + '`confusion_matrix.py` needs to be implemented')
+        confusion_matrix[target][prediction] += 1
 
         #######################################################################
         # Student code ends
@@ -114,8 +130,8 @@ def generate_confusion_matrix(
         # Student code begins
         #######################################################################
 
-        raise NotImplementedError('`generate_confusion_matrix` function in '
-            + '`confusion_matrix.py` needs to be implemented')
+        for cla in range(0, num_classes):
+            confusion_matrix[:, cla] /= (targets == cla).sum()
 
         #######################################################################
         # Student code ends

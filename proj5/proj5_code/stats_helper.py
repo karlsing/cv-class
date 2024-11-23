@@ -30,9 +30,20 @@ def compute_mean_and_std(dir_name: str) -> Tuple[float, float]:
     ############################################################################
     # Student code begin
     ############################################################################
-    filenames = os.listdir(dir_name)
-    raise NotImplementedError('`compute_mean_and_std` function in '
-        + '`stats_helper.py` needs to be implemented')
+
+    filenames = glob.glob(os.path.join(dir_name,"**/*.jpg"), recursive=True)
+    images = map(lambda x:np.asarray(Image.open(x).convert('L'))/255.0, filenames)
+    count_number = 0
+    all_sum = 0
+    all_sum_sq = 0
+    for image in images:
+        pixel_sum = np.sum(image)
+        pixel_sum_square = np.sum(np.square(image))
+        count_number += image.size
+        all_sum += pixel_sum
+        all_sum_sq += pixel_sum_square
+    mean = all_sum / count_number
+    std = np.sqrt((1 / (count_number - 1)) * (all_sum_sq - count_number * (mean ** 2)))
 
     ############################################################################
     # Student code end

@@ -26,16 +26,15 @@ class MyResNet18(nn.Module):
         #######################################################################
         # Student code begins
         #######################################################################
-
-        res_model = resnet18()
+        
+        from torchvision.models.resnet import ResNet18_Weights
+        res_model = resnet18(weights=ResNet18_Weights.IMAGENET1K_V1)
         block_list = list(res_model.children())[:-1] # remove last fc layer in resnet18
-        self.conv_layers = nn.Sequential(*block_list, nn.Flatten())
+        self.conv_layers = nn.Sequential(*block_list)
         self.conv_layers.requires_grad_(False) # freeze conv layers
         
-        fc1 = nn.Linear(512, 128)
-        act1 = nn.ReLU()
-        fc2 = nn.Linear(128, 15)
-        self.fc_layers = nn.Sequential(fc1, act1, fc2)
+        fc1 = nn.Linear(512, 15)
+        self.fc_layers = nn.Sequential(nn.Flatten(), fc1)
         
         self.loss_criterion = nn.CrossEntropyLoss(reduction='mean')
 
@@ -62,7 +61,7 @@ class MyResNet18(nn.Module):
         #######################################################################
 
         x = self.conv_layers(x)
-        model_output = self.conv_layers(x)
+        model_output = self.fc_layers(x)
 
         #######################################################################
         # Student code ends

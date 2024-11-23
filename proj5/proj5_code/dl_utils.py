@@ -31,7 +31,8 @@ def compute_accuracy(logits: torch.Tensor, labels: torch.Tensor) -> float:
     # Student code begins
     ###########################################################################
 
-    pred = logits.argmax(-1) == labels
+    pred = logits.argmax(-1)
+    pred = pred == labels
     pred = pred.to(torch.float)
     pred = pred.mean().item() 
     batch_accuracy = pred
