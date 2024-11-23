@@ -2,6 +2,6 @@
 .idea/
 .venv/
 # data/
-proj5/proj5_unit_tests/small_data/
+# proj5/proj5_unit_tests/small_data/
 
 __pycache__
