@@ -1,7 +1,7 @@
 .DS_Store
 .idea/
 .venv/
-data/
+# data/
 proj5/proj5_unit_tests/small_data/
 
 __pycache__
