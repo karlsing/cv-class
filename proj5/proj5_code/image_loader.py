@@ -64,9 +64,11 @@ class ImageLoader(data.Dataset):
         # Student code begins
         #######################################################################
         
-        for classname, label in class_labels:
-            filenames = os.listdir(os.path.join(self.curr_folder, classname))
-            img_paths.extend([(filename, label) for filename in filenames])
+        for classname in class_labels:
+            label = class_labels[classname]
+            class_folder = os.path.join(self.curr_folder, classname)
+            filenames = os.listdir(class_folder)
+            img_paths.extend([(f'{classname}/{filename}', label) for filename in filenames])
         
         #######################################################################
         # Student code ends
@@ -155,8 +157,8 @@ class ImageLoader(data.Dataset):
         #######################################################################
         
         filename, class_idx = self.dataset[index]
-        
-        img = self.load_img_from_path(filename)
+        path = os.path.join(self.curr_folder, filename)
+        img = self.load_img_from_path(path)
 
         if self.transform is not None:
             img = self.transform(img)

@@ -31,8 +31,10 @@ def compute_accuracy(logits: torch.Tensor, labels: torch.Tensor) -> float:
     # Student code begins
     ###########################################################################
 
-    raise NotImplementedError('`compute_accuracy` function in '
-        + '`dl_utils.py` needs to be implemented')
+    pred = logits.argmax(-1) == labels
+    pred = pred.to(torch.float)
+    pred = pred.mean().item() 
+    batch_accuracy = pred
 
     ###########################################################################
     # Student code ends
@@ -91,3 +93,7 @@ def save_trained_model_weights(
 
     save_dict = {"class_name": class_name, "state_dict": state_dict}
     torch.save(save_dict, f"{out_dir}/trained_{class_name}_final.pt")
+
+"""
+Temporary Done
+"""
