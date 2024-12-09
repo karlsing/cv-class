@@ -20,11 +20,11 @@ class SimpleNet(nn.Module):
         # Student code begins
         #######################################################################
         #input size: 1*64*64
-        conv1 = nn.Conv2d(1, 12, kernel_size=(5, 5), padding=2) # 64*64
-        pool1 = nn.MaxPool2d((2, 2), 2) # 32*32
+        conv1 = nn.Conv2d(1, 10, kernel_size=(5, 5), padding=0) # 10*60*60
+        pool1 = nn.MaxPool2d((3, 3), 3) # 10*20*20
         relu1 = nn.ReLU()
-        conv2 = nn.Conv2d(12, 24, kernel_size=(3, 3), padding=1) # 32*32
-        pool2 = nn.MaxPool2d((2, 2), 2) # 16*16
+        conv2 = nn.Conv2d(10, 20, kernel_size=(5, 5), padding=0) # 20*16*16
+        pool2 = nn.MaxPool2d((3, 3), 3) # 20*5*5
         relu2 = nn.ReLU()
         
         self.conv_layers = nn.Sequential(
@@ -32,9 +32,9 @@ class SimpleNet(nn.Module):
             nn.Flatten(start_dim=1)
         )
         
-        fc1 = nn.Linear(24*16*16, 384)
+        fc1 = nn.Linear(20*5*5, 100)
         act1 = nn.ReLU()
-        fc2 = nn.Linear(384, 15)
+        fc2 = nn.Linear(100, 15)
         self.fc_layers = nn.Sequential(fc1, act1, fc2)
         
         self.loss_criterion = nn.CrossEntropyLoss(reduction='mean')
